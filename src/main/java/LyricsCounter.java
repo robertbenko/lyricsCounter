@@ -52,21 +52,38 @@ public class LyricsCounter {
     public static void main(String[] args) {
 
 // - firstLetterWithCounter - mapa pierwszych liter slowa z iloscia ich wystapien
-
+        //OK
         Map<String, Integer> firstLetterWithCounter = new HashMap<String, Integer>();
         for (String word : getWordsInLyrics()) {
-            if (firstLetterWithCounter.containsKey(word.substring(0, 1))) {
-                Integer currentCount = firstLetterWithCounter.get(word.substring(0, 1));
-                firstLetterWithCounter.put(word.substring(0, 1), currentCount + 1);
+            if (firstLetterWithCounter.containsKey(word.substring(0, 1).toLowerCase())) {
+                Integer currentCount = firstLetterWithCounter.get(word.substring(0, 1).toLowerCase());
+                firstLetterWithCounter.put(word.substring(0, 1).toLowerCase(), currentCount + 1);
             } else {
-                firstLetterWithCounter.put(word.substring(0, 1), 1);
+                firstLetterWithCounter.put(word.substring(0, 1).toLowerCase(), 1);
             }
         }
-// - wordWithFirstLetter - mapa wyrazow i odpowiadająca mu pierwsza litera
+        //OK
 
-        Map<String, String> wordWithFirstLetter = new HashMap<String, String>();
-        for (String word : getWordsInLyrics())
-            wordWithFirstLetter.put(word, word.substring(0, 1));
+        for (Map.Entry<String, Integer> wordCount : firstLetterWithCounter.entrySet()) {
+            if (wordCount.getValue().equals(max(firstLetterWithCounter.values()))) {
+                String mostOftenLetter = wordCount.getKey();
+                System.out.println(mostOftenLetter); //i
+            }
+            
+
+
+        int maxValueInMap = max(firstLetterWithCounter.values());
+
+        List<String> linkedWords = new LinkedList<>();
+        for (String word : getWordsInLyrics()) {
+           // if (word.substring(1).equals(firstLetterWithCounter.);
+            linkedWords.add(word.toLowerCase());
+        }
+
+        HashMap<String, LinkedList<String>> firstLetterWithWords = new HashMap<String, LinkedList<String>>();
+        for (String word : getWordsInLyrics()) {
+            firstLetterWithWords.put(word.substring(0, 1).toLowerCase(), (LinkedList<String>) linkedWords);
+        }
 
 
 //Sortowanie HashMapy firstLetterWithCounter zeby sprawdzic jaka litera wystepuje najczesciej i dla sportu
@@ -75,6 +92,14 @@ public class LyricsCounter {
                 .stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue())
                 .forEach(System.out::println);
+
+        System.out.println(linkedWords);
+        System.out.println(firstLetterWithWords);
+
+
+
+
+
 
 
     }
