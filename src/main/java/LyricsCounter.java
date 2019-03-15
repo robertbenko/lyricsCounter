@@ -54,53 +54,43 @@ public class LyricsCounter {
 // - firstLetterWithCounter - mapa pierwszych liter slowa z iloscia ich wystapien
         //OK
         Map<String, Integer> firstLetterWithCounter = new HashMap<String, Integer>();
+        HashMap<String, LinkedList<String>> firstLetterWithWords = new HashMap<String, LinkedList<String>>();
+
         for (String word : getWordsInLyrics()) {
-            if (firstLetterWithCounter.containsKey(word.substring(0, 1).toLowerCase())) {
-                Integer currentCount = firstLetterWithCounter.get(word.substring(0, 1).toLowerCase());
-                firstLetterWithCounter.put(word.substring(0, 1).toLowerCase(), currentCount + 1);
+            String firstLetter = word.substring(0, 1).toLowerCase();
+            LinkedList<String> linkedWords = firstLetterWithWords.get(firstLetter);
+            if (linkedWords == null) {
+                linkedWords = new LinkedList<>();
+                firstLetterWithWords.put(firstLetter, linkedWords);
+                firstLetterWithCounter.put(firstLetter, 1);
             } else {
-                firstLetterWithCounter.put(word.substring(0, 1).toLowerCase(), 1);
+                linkedWords.add(word);
+                Integer currentCount = firstLetterWithCounter.get(firstLetter);
+                firstLetterWithCounter.put(firstLetter, currentCount + 1);
             }
         }
-        //OK
+// The most often occurring letter
+        String mostOftenLetter = "";
 
         for (Map.Entry<String, Integer> wordCount : firstLetterWithCounter.entrySet()) {
             if (wordCount.getValue().equals(max(firstLetterWithCounter.values()))) {
-                String mostOftenLetter = wordCount.getKey();
-                System.out.println(mostOftenLetter); //i
+                mostOftenLetter = wordCount.getKey();
             }
-            
-
-
-        int maxValueInMap = max(firstLetterWithCounter.values());
-
-        List<String> linkedWords = new LinkedList<>();
-        for (String word : getWordsInLyrics()) {
-           // if (word.substring(1).equals(firstLetterWithCounter.);
-            linkedWords.add(word.toLowerCase());
         }
+        System.out.println("The most often occurring letter is: " + '"' + mostOftenLetter + '"'); //i
 
-        HashMap<String, LinkedList<String>> firstLetterWithWords = new HashMap<String, LinkedList<String>>();
-        for (String word : getWordsInLyrics()) {
-            firstLetterWithWords.put(word.substring(0, 1).toLowerCase(), (LinkedList<String>) linkedWords);
+//Take all words for the most often occurring letter
+        for (Map.Entry<String, LinkedList<String>> letterWithWords : firstLetterWithWords.entrySet()) {
+            if (letterWithWords.getKey().equals(mostOftenLetter)) {
+                System.out.println("The list of words starting with " + '"' + mostOftenLetter + '"' + " :" + letterWithWords.getValue());
+            }
         }
-
-
-//Sortowanie HashMapy firstLetterWithCounter zeby sprawdzic jaka litera wystepuje najczesciej i dla sportu
-
-        firstLetterWithCounter.entrySet()
-                .stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue())
-                .forEach(System.out::println);
-
-        System.out.println(linkedWords);
-        System.out.println(firstLetterWithWords);
-
-
-
-
-
-
+// Sorting
+//        firstLetterWithCounter.entrySet()
+//                .stream()
+//                .sorted(Map.Entry.<String, Integer>comparingByValue())
+//                .forEach(System.out::println);
+//
 
     }
 }
