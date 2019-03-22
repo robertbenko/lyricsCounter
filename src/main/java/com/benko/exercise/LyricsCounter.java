@@ -51,13 +51,16 @@ public class LyricsCounter {
 
     public static void main(String[] args) {
 
+    }
+
 // - firstLetterWithCounter - mapa pierwszych liter slowa z iloscia ich wystapien
         //OK
+    private static void checkOccurance(String eachword){
         Map<String, Integer> firstLetterWithCounter = new HashMap<String, Integer>();
         HashMap<String, LinkedList<String>> firstLetterWithWords = new HashMap<String, LinkedList<String>>();
 
         for (String word : getWordsInLyrics()) {
-            String firstLetter = word.substring(0, 1).toLowerCase();
+            String firstLetter = eachword.substring(0, 1).toLowerCase();
             LinkedList<String> linkedWords = firstLetterWithWords.get(firstLetter);
             if (linkedWords == null) {
                 linkedWords = new LinkedList<>();
@@ -69,6 +72,7 @@ public class LyricsCounter {
                 firstLetterWithCounter.put(firstLetter, currentCount + 1);
             }
         }
+
 // The most often occurring letter
         String mostOftenLetter = "";
 
