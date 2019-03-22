@@ -1,6 +1,5 @@
+package com.benko.exercise;
 import java.util.*;
-
-import static java.util.Collections.max;
 
 public class LyricsCounter {
 
@@ -51,50 +50,40 @@ public class LyricsCounter {
 
     public static void main(String[] args) {
 
-    }
-
-// - firstLetterWithCounter - mapa pierwszych liter slowa z iloscia ich wystapien
-        //OK
-    private static void checkOccurance(String eachword){
-        Map<String, Integer> firstLetterWithCounter = new HashMap<String, Integer>();
         HashMap<String, LinkedList<String>> firstLetterWithWords = new HashMap<String, LinkedList<String>>();
 
         for (String word : getWordsInLyrics()) {
-            String firstLetter = eachword.substring(0, 1).toLowerCase();
+            String firstLetter = word.substring(0, 1).toLowerCase();
             LinkedList<String> linkedWords = firstLetterWithWords.get(firstLetter);
             if (linkedWords == null) {
                 linkedWords = new LinkedList<>();
+                linkedWords.add(word);
                 firstLetterWithWords.put(firstLetter, linkedWords);
-                firstLetterWithCounter.put(firstLetter, 1);
             } else {
                 linkedWords.add(word);
-                Integer currentCount = firstLetterWithCounter.get(firstLetter);
-                firstLetterWithCounter.put(firstLetter, currentCount + 1);
             }
         }
 
-// The most often occurring letter
-        String mostOftenLetter = "";
+        int maxTableSize = 0;
 
-        for (Map.Entry<String, Integer> wordCount : firstLetterWithCounter.entrySet()) {
-            if (wordCount.getValue().equals(max(firstLetterWithCounter.values()))) {
-                mostOftenLetter = wordCount.getKey();
+        for (Map.Entry<String, LinkedList<String>> eachLine : firstLetterWithWords.entrySet()) {
+            if (maxTableSize < eachLine.getValue().size()) {
+                maxTableSize = eachLine.getValue().size();
+            }
+        }
+
+        String mostOftenLetter = "";
+        LinkedList<String> wordsForMostOftenLetter = null;
+
+        for (Map.Entry<String, LinkedList<String>> eachLine : firstLetterWithWords.entrySet()) {
+            if (eachLine.getValue().size() == maxTableSize) {
+                mostOftenLetter = eachLine.getKey();
+                wordsForMostOftenLetter = eachLine.getValue();
             }
         }
         System.out.println("The most often occurring letter is: " + '"' + mostOftenLetter + '"'); //i
-
-//Take all words for the most often occurring letter
-        for (Map.Entry<String, LinkedList<String>> letterWithWords : firstLetterWithWords.entrySet()) {
-            if (letterWithWords.getKey().equals(mostOftenLetter)) {
-                System.out.println("The list of words starting with " + '"' + mostOftenLetter + '"' + " :" + letterWithWords.getValue());
-            }
-        }
-// Sorting
-//        firstLetterWithCounter.entrySet()
-//                .stream()
-//                .sorted(Map.Entry.<String, Integer>comparingByValue())
-//                .forEach(System.out::println);
-//
+        System.out.println("The list of words starting with " + '"' + mostOftenLetter + '"' + " :" + wordsForMostOftenLetter);
 
     }
 }
+
